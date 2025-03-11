@@ -6,8 +6,10 @@ import {
   GraduationCap,
   BookOpen,
   LogOut,
-  Building,
-  FileText,
+  PlusCircle,
+  Calendar,
+  Bell,
+  School,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,47 +24,45 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useRouter } from "next/navigation";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 const adminData = {
   name: "Admin User",
   id: "ADM2024001",
   totalStudents: "450",
   totalFaculty: "45",
-  totalDepartments: "8",
-  recentActivities: [
+  totalPrograms: "12",
+  scheduledEvents: [
     {
       id: 1,
-      activity: "New Faculty Registration",
-      department: "Computer Science",
-      date: "2024-04-18",
+      name: "Annual Tech Symposium",
+      date: "2024-05-15",
+      description: "Annual technology showcase event",
+      image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop",
     },
     {
       id: 2,
-      activity: "Student Enrollment",
-      department: "Electrical Engineering",
-      date: "2024-04-17",
-    },
-    {
-      id: 3,
-      activity: "Course Schedule Update",
-      department: "Mechanical Engineering",
-      date: "2024-04-16",
+      name: "Cultural Fest",
+      date: "2024-05-20",
+      description: "Annual cultural festival",
+      image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&auto=format&fit=crop",
     },
   ],
-  pendingRequests: [
+  recentNotices: [
     {
       id: 1,
-      type: "Leave Application",
-      from: "Dr. Sarah Wilson",
-      status: "Pending",
+      title: "End Semester Examination Schedule",
       date: "2024-04-19",
+      description: "The end semester examinations will commence from May 15th, 2024",
     },
     {
       id: 2,
-      type: "Resource Request",
-      from: "Prof. James Brown",
-      status: "Pending",
+      title: "Holiday Notice",
       date: "2024-04-18",
+      description: "College will remain closed on April 25th due to local elections",
     },
   ],
 };
@@ -105,6 +105,127 @@ export default function AdminDashboard() {
           </AlertDialog>
         </div>
 
+        {/* Action Buttons */}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+          <AdminActionButton
+            title="Add Student"
+            icon={<Users className="h-5 w-5" />}
+            description="Add a new student to the system"
+          >
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="studentName">Student Name</Label>
+                <Input id="studentName" placeholder="Enter student name" />
+              </div>
+              <div>
+                <Label htmlFor="studentEmail">Email</Label>
+                <Input id="studentEmail" type="email" placeholder="Enter email" />
+              </div>
+              <div>
+                <Label htmlFor="studentProgram">Program</Label>
+                <Input id="studentProgram" placeholder="Select program" />
+              </div>
+              <Button className="w-full">Add Student</Button>
+            </div>
+          </AdminActionButton>
+
+          <AdminActionButton
+            title="Add Faculty"
+            icon={<GraduationCap className="h-5 w-5" />}
+            description="Add a new faculty member"
+          >
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="facultyName">Faculty Name</Label>
+                <Input id="facultyName" placeholder="Enter faculty name" />
+              </div>
+              <div>
+                <Label htmlFor="facultyEmail">Email</Label>
+                <Input id="facultyEmail" type="email" placeholder="Enter email" />
+              </div>
+              <div>
+                <Label htmlFor="department">Department</Label>
+                <Input id="department" placeholder="Select department" />
+              </div>
+              <Button className="w-full">Add Faculty</Button>
+            </div>
+          </AdminActionButton>
+
+          <AdminActionButton
+            title="Add Program"
+            icon={<School className="h-5 w-5" />}
+            description="Add a new academic program"
+          >
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="programName">Program Name</Label>
+                <Input id="programName" placeholder="e.g., B.Tech, B.Com" />
+              </div>
+              <div>
+                <Label htmlFor="duration">Duration (years)</Label>
+                <Input id="duration" type="number" placeholder="Enter duration" />
+              </div>
+              <div>
+                <Label htmlFor="courses">Courses</Label>
+                <Textarea id="courses" placeholder="Enter course names (one per line)" />
+              </div>
+              <Button className="w-full">Add Program</Button>
+            </div>
+          </AdminActionButton>
+
+          <AdminActionButton
+            title="Add Notice"
+            icon={<Bell className="h-5 w-5" />}
+            description="Post a new notice"
+          >
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="noticeTitle">Notice Title</Label>
+                <Input id="noticeTitle" placeholder="Enter notice title" />
+              </div>
+              <div>
+                <Label htmlFor="noticeDescription">Description</Label>
+                <Textarea
+                  id="noticeDescription"
+                  placeholder="Enter notice description"
+                  className="min-h-[100px]"
+                />
+              </div>
+              <Button className="w-full">Post Notice</Button>
+            </div>
+          </AdminActionButton>
+
+          <AdminActionButton
+            title="Add Event"
+            icon={<Calendar className="h-5 w-5" />}
+            description="Create a new event"
+          >
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="eventName">Event Name</Label>
+                <Input id="eventName" placeholder="Enter event name" />
+              </div>
+              <div>
+                <Label htmlFor="eventDate">Event Date</Label>
+                <Input id="eventDate" type="date" />
+              </div>
+              <div>
+                <Label htmlFor="eventDescription">Description</Label>
+                <Textarea
+                  id="eventDescription"
+                  placeholder="Enter event description"
+                  className="min-h-[100px]"
+                />
+              </div>
+              <div>
+                <Label htmlFor="imageUrl">Image URL</Label>
+                <Input id="imageUrl" placeholder="Enter image URL" />
+              </div>
+              <Button className="w-full">Create Event</Button>
+            </div>
+          </AdminActionButton>
+        </div>
+
         {/* Stats Grid */}
         <div className="grid md:grid-cols-4 gap-6 mb-8">
           <StatCard
@@ -118,9 +239,9 @@ export default function AdminDashboard() {
             icon={<GraduationCap className="h-6 w-6" />}
           />
           <StatCard
-            title="Departments"
-            value={adminData.totalDepartments}
-            icon={<Building className="h-6 w-6" />}
+            title="Total Programs"
+            value={adminData.totalPrograms}
+            icon={<School className="h-6 w-6" />}
           />
           <StatCard
             title="Admin ID"
@@ -131,64 +252,52 @@ export default function AdminDashboard() {
 
         {/* Content Grid */}
         <div className="grid md:grid-cols-2 gap-6">
-          {/* Recent Activities */}
+          {/* Events Section */}
           <Card className="p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold">Recent Activities</h2>
+              <h2 className="text-xl font-semibold">Scheduled Events</h2>
               <Button variant="ghost" size="sm">
                 View All
               </Button>
             </div>
             <div className="space-y-4">
-              {adminData.recentActivities.map((activity) => (
+              {adminData.scheduledEvents.map((event) => (
                 <div
-                  key={activity.id}
-                  className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+                  key={event.id}
+                  className="flex gap-4 p-4 bg-gray-50 rounded-lg"
                 >
+                  <img
+                    src={event.image}
+                    alt={event.name}
+                    className="w-24 h-24 object-cover rounded-lg"
+                  />
                   <div>
-                    <h3 className="font-medium">{activity.activity}</h3>
-                    <p className="text-sm text-gray-600">
-                      Department: {activity.department}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm text-gray-600">Date: {activity.date}</p>
-                    <Button variant="ghost" size="sm" className="mt-2">
-                      <FileText className="h-4 w-4 mr-2" />
-                      Details
-                    </Button>
+                    <h3 className="font-medium">{event.name}</h3>
+                    <p className="text-sm text-gray-600">Date: {event.date}</p>
+                    <p className="text-sm text-gray-600 mt-1">{event.description}</p>
                   </div>
                 </div>
               ))}
             </div>
           </Card>
 
-          {/* Pending Requests */}
+          {/* Notices Section */}
           <Card className="p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold">Pending Requests</h2>
+              <h2 className="text-xl font-semibold">Recent Notices</h2>
               <Button variant="ghost" size="sm">
                 View All
               </Button>
             </div>
             <div className="space-y-4">
-              {adminData.pendingRequests.map((request) => (
+              {adminData.recentNotices.map((notice) => (
                 <div
-                  key={request.id}
+                  key={notice.id}
                   className="p-4 bg-gray-50 rounded-lg"
                 >
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h3 className="font-medium">{request.type}</h3>
-                      <p className="text-sm text-gray-600">From: {request.from}</p>
-                    </div>
-                    <div className="text-right">
-                      <span className="inline-block px-2 py-1 text-xs font-semibold text-yellow-700 bg-yellow-100 rounded-full">
-                        {request.status}
-                      </span>
-                    </div>
-                  </div>
-                  <p className="text-sm text-gray-600 mt-2">Date: {request.date}</p>
+                  <h3 className="font-medium">{notice.title}</h3>
+                  <p className="text-sm text-gray-600">Date: {notice.date}</p>
+                  <p className="text-sm text-gray-600 mt-2">{notice.description}</p>
                 </div>
               ))}
             </div>
@@ -218,5 +327,39 @@ function StatCard({
         </div>
       </div>
     </Card>
+  );
+}
+
+function AdminActionButton({
+  title,
+  icon,
+  description,
+  children,
+}: {
+  title: string;
+  icon: React.ReactNode;
+  description: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          className="h-auto py-4 flex flex-col items-center gap-2 text-center"
+        >
+          <div className="p-2 bg-blue-100 rounded-full text-blue-600">
+            {icon}
+          </div>
+          <span className="font-medium">{title}</span>
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+        </DialogHeader>
+        {children}
+      </DialogContent>
+    </Dialog>
   );
 }
